@@ -26,6 +26,11 @@
             <artifactId>lombok</artifactId>
             <version>1.18.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
+            <version>0.11</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
