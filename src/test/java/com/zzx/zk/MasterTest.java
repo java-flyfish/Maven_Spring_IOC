@@ -2,10 +2,12 @@ package com.zzx.zk;
 
 import org.junit.Test;
 
+import java.io.IOException;
+
 public class MasterTest {
     /**
      *  在这个例子中，我们模拟一个需要有一个进程获取到管理权的例子
-     *  1.
+     *  1.这是同步的方式
      */
     @Test
     public void testMaster() {
@@ -25,7 +27,8 @@ public class MasterTest {
 
     /**
      *  在这个例子中，我们模拟一个需要有一个进程获取到管理权的例子
-     *  1.
+     *  1.这是异步的方式，
+     *  2.zk分布式锁的实现推荐使用异步方式，性能更好
      */
     @Test
     public void testAsynMaster() {
@@ -41,5 +44,22 @@ public class MasterTest {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void createParent(){
+        String hostPort = "49.235.174.180:2182,49.235.174.180:2183,49.235.174.180:2184";
+        ZkBaseData zk = new ZkBaseData(hostPort);
+        try {
+            zk.startZK();
+            zk.createParent("/workers",new byte[0]);
+            zk.createParent("/assign",new byte[0]);
+            zk.createParent("/tasks",new byte[0]);
+            zk.createParent("/status",new byte[0]);
+            Thread.sleep(60000l);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
