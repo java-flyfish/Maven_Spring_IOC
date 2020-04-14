@@ -6,6 +6,10 @@ import java.io.IOException;
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
 
 /**
+ * @Author: weiyang
+ * @Date: 2020/4/14 15:15
+ * @Version: 1.0
+ * @Content:
  * 综合zk工具，异步创建节点和获取节点
  * 1.通过异步都方式，不需要关心KeeperException和InterruptedException这两个异常
  * 2.异步都方式不会阻塞zk处理线程
@@ -15,13 +19,21 @@ public class AsynMasterAll implements Watcher {
     private String hostPort;
     private String serverId;
 
-    //异步创建节点时的回调函数
+    /**
+     *  异步创建节点时的回调函数
+     */
     private AsyncCallback.StringCallback createNodeCallback;
-    //异步获取节点数据时的回调函数
+    /**
+     *  异步获取节点数据时的回调函数
+     */
     private AsyncCallback.DataCallback getNodeCallback;
-    //异步获取节点是否存在回调函数
+    /**
+     *  异步获取节点是否存在回调函数
+     */
     private  AsyncCallback.StatCallback existsCallback;
-    //获取自节点列表回调函数
+    /**
+     * 获取自节点列表回调函数
+     */
     private AsyncCallback.ChildrenCallback childrenCallback;
 
     public AsynMasterAll(String hostPort){
@@ -51,6 +63,7 @@ public class AsynMasterAll implements Watcher {
                     break;
                 default:
                     System.out.println("节点创建出现未知错误，放弃创建：" + path);
+                    break;
             }
         };
 
@@ -74,8 +87,10 @@ public class AsynMasterAll implements Watcher {
                         //节点不是自己创建的，设置监听事件
                         System.out.println("节点不是自己创建的，开始处理逻辑：" + path);
                     }
+                    break;
                 default:
                     System.out.println("节点获取出现未知错误，放弃获取：" + path);
+                    break;
             }
         };
 

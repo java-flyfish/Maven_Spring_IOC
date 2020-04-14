@@ -14,7 +14,9 @@ public class ZkBaseData implements Watcher {
     Random random = new Random();
     String serverId = Integer.toHexString(random.nextInt());
 
-    //异步创建节点时的回调函数
+    /**
+     * 异步创建节点时的回调函数
+     */
     AsyncCallback.StringCallback parentCreatedCallback;
 
     public ZkBaseData(String hostPort){

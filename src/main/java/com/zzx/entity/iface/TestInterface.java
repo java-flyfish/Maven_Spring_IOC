@@ -8,5 +8,8 @@ package com.zzx.entity.iface;
  * @Version: V1.0
  **/
 public interface TestInterface {
+    /**
+     * 实现它做自己的业务逻辑
+     */
     void doSomeThing();
 }

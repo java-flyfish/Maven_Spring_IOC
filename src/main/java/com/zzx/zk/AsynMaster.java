@@ -9,6 +9,10 @@ import java.util.Random;
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
 
 /**
+ * @Author: weiyang
+ * @Date: 2020/4/14 15:15
+ * @Version: 1.0
+ * @Content:
  * 异步创建节点和获取节点
  * 1.通过异步都方式，不需要关心KeeperException和InterruptedException这两个异常
  * 2.异步都方式不会阻塞zk处理线程
@@ -21,9 +25,13 @@ public class AsynMaster implements Watcher {
     Random random = new Random();
     String serverId = Integer.toHexString(random.nextInt());
 
-    //异步创建节点时的回调函数
+    /**
+     * 异步创建节点时的回调函数
+     */
     AsyncCallback.StringCallback masterCreatedCallback;
-    //异步获取节点数据时的回调函数
+    /**
+     * 异步获取节点数据时的回调函数
+     */
     AsyncCallback.DataCallback masterDataCallback;
 
     public AsynMaster(String hostPort){
@@ -54,10 +62,12 @@ public class AsynMaster implements Watcher {
             switch (KeeperException.Code.get(rc)){
                 case CONNECTIONLOSS:
                     chechMaster();
-                    return;
+                    break;
                 case NONODE:
                     runForMaster();
-                    return;
+                    break;
+                default:
+                    break;
             }
         };
     }

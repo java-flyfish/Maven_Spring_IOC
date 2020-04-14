@@ -12,9 +12,13 @@ public class Worker implements Watcher {
     Random random = new Random();
     String serverId = Integer.toHexString(random.nextInt());
 
-    //异步创建节点时的回调函数
+    /**
+     * 异步创建节点时的回调函数
+     */
     AsyncCallback.StringCallback workerCreateCallback;
-    //异步更新节点回调函数
+    /**
+     * 异步更新节点回调函数
+     */
     AsyncCallback.StatCallback workerUpdateCallback;
 
     public Worker(String hostPort){
