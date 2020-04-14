@@ -62,4 +62,23 @@ public class MasterTest {
         }
 
     }
+
+    @Test
+    public void createAll(){
+        String hostPort = "49.235.174.180:2182,49.235.174.180:2183,49.235.174.180:2184";
+        AsynMasterAll zk = new AsynMasterAll(hostPort);
+        try {
+            zk.startZK();
+            zk.createNodePersistent("/father","");
+            zk.createNodeEphemeral("/father/child01-","first node 1");
+            zk.createNodeEphemeral("/father/child01-","first node 2");
+            zk.createNodeEphemeral("/father/child01-","first node 3");
+            Thread.sleep(1000l);
+            zk.getChildren("/father");
+            Thread.sleep(60000l);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }

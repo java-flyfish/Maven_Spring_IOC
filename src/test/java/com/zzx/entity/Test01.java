@@ -42,4 +42,9 @@ public class Test01 {
         lock.lock();
     }
 
+    @Test
+    public void testStringBuilder(){
+        StringBuffer sb = new StringBuffer();
+        sb.append("aaa");
+    }
 }

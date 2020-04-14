@@ -1,11 +1,7 @@
 package com.zzx.zk;
 
 import org.apache.zookeeper.*;
-import org.springframework.util.StringUtils;
-import sun.swing.StringUIClientPropertyKey;
-
 import java.io.IOException;
-import java.util.Random;
 
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
 
@@ -20,13 +16,13 @@ public class AsynMasterAll implements Watcher {
     private String serverId;
 
     //异步创建节点时的回调函数
-    AsyncCallback.StringCallback createNodeCallback;
+    private AsyncCallback.StringCallback createNodeCallback;
     //异步获取节点数据时的回调函数
-    AsyncCallback.DataCallback getNodeCallback;
+    private AsyncCallback.DataCallback getNodeCallback;
     //异步获取节点是否存在回调函数
-    AsyncCallback.StatCallback existsCallback;
+    private  AsyncCallback.StatCallback existsCallback;
     //获取自节点列表回调函数
-    AsyncCallback.ChildrenCallback childrenCallback;
+    private AsyncCallback.ChildrenCallback childrenCallback;
 
     public AsynMasterAll(String hostPort){
         this.hostPort = hostPort;
@@ -65,7 +61,7 @@ public class AsynMasterAll implements Watcher {
                     getNode(path);
                     break;
                 case NONODE:
-                    createNode(path,(String)ctx);
+                    createNodeEphemeral(path,(String)ctx);
                     break;
                 case OK:
                     System.out.println("节点获取成功，开始自己的业务逻辑：" + path);
@@ -143,11 +139,15 @@ public class AsynMasterAll implements Watcher {
      *      所以要在捕获这个异常后验证节点是否创建成功
      * 3.
      */
-    public void createNode(String path,String data) {
+    public void createNodeEphemeral(String path,String data) {
         //其中ctx参数为上下文参数，回调调时候会透传到回调函数中
-        zk.create(path,data.getBytes(),OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL,createNodeCallback,data);
+        zk.create(path,data.getBytes(),OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL,createNodeCallback,data);
     }
 
+    public void createNodePersistent(String path,String data) {
+        //其中ctx参数为上下文参数，回调调时候会透传到回调函数中
+        zk.create(path,data.getBytes(),OPEN_ACL_UNSAFE, CreateMode.PERSISTENT,createNodeCallback,data);
+    }
     /**
      * 检查自身时都是主节点
      * @return
@@ -160,7 +160,7 @@ public class AsynMasterAll implements Watcher {
      * 检查节点是否存在
      * @param path
      */
-    private void existsNode(String path) {
+    public void existsNode(String path) {
         zk.exists(path,this,existsCallback,null);
     }
 
@@ -168,7 +168,7 @@ public class AsynMasterAll implements Watcher {
      * 获取子节点
      * @param path
      */
-    private void getChildren(String path) {
+    public void getChildren(String path) {
         zk.getChildren(path,this,childrenCallback,null);
     }
 }
