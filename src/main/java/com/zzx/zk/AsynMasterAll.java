@@ -32,7 +32,7 @@ public class AsynMasterAll implements Watcher {
      */
     private  AsyncCallback.StatCallback existsCallback;
     /**
-     * 获取自节点列表回调函数
+     * 获取子节点列表回调函数
      */
     private AsyncCallback.ChildrenCallback childrenCallback;
 
